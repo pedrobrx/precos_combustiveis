@@ -264,7 +264,7 @@ with col2:
     st.markdown(
         f"""
         <h3 style="font-size: 1.15rem; margin-bottom: -0.5rem; font-family: Arial, sans-serif;">
-            MAPA DE CALOR: <span style="color: #0078c0;">{nome_comb_upper}</span>
+            MAPA DE CALOR: <span style="color: #00a2e8;">{nome_comb_upper}</span>
         </h3>
         """,
         unsafe_allow_html=True
