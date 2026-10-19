@@ -8,15 +8,33 @@ st.set_page_config(
     layout="wide", page_title="Mapa de Calor - Preço de Combustíveis GO"
 )
 
-# Otimização de CSS para remover margens superiores excessivas do Streamlit
+# Estilos CSS otimizados para responsividade e redução de tamanhos de fontes
 st.markdown(
     """
     <style>
-        .block-container { padding-top: 1rem; padding-bottom: 0.5rem; }
+        .block-container { 
+            padding-top: 1.2rem; 
+            padding-bottom: 0.5rem; 
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        .stPlotlyChart {
+            width: 100% !important;
+        }
+        /* Reduz o tamanho da fonte do st.title */
+        h1 {
+            font-size: 1.6rem !important;
+        }
+        /* Reduz o tamanho da fonte do st.subheader (Título do Mapa) */
+        h3 {
+            font-size: 1.15rem !important;
+            margin-bottom: -0.5rem !important;
+        }
     </style>
 """,
     unsafe_allow_html=True,
 )
+
 
 st.title("🗺️ Mapa de Calor de Preços de Combustíveis - Goiás")
 
@@ -239,12 +257,24 @@ with col2:
         if qtd_outliers > 0
         else "Outliers: Nenhum (0%)"
     )
-    titulo_mapa = f"MAPA DE CALOR: {opcoes_combustiveis[combustivel_selecionado].upper()}"
-    st.subheader(titulo_mapa)
+
+    # Título do mapa estilizado com HTML para colorir somente o nome do combustível
+    nome_comb_upper = opcoes_combustiveis[combustivel_selecionado].upper()
+    
+    st.markdown(
+        f"""
+        <h3 style="font-size: 1.15rem; margin-bottom: -0.5rem; font-family: Arial, sans-serif;">
+            MAPA DE CALOR: <span style="color: #0078c0;">{nome_comb_upper}</span>
+        </h3>
+        """,
+        unsafe_allow_html=True
+    )
+    
     st.caption(
         f"Estado de Goiás | Período: {data_ini} a {data_fim} |"
         f" {status_outlier_txt}"
     )
+
 
     url_geojson = "https://raw.githubusercontent.com/tbrugz/geodata-br/master/geojson/geojs-52-mun.json"
 
