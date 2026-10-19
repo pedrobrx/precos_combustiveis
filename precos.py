@@ -85,8 +85,6 @@ if uploaded_file is not None:
     colunas_fixas = [
         "MUNICIPIO",
         "COD_IBGE",
-        "Latitude",
-        "Longitude",
         "DATA_INI",
         "DATA_FIM",
     ]
@@ -97,11 +95,30 @@ if uploaded_file is not None:
     }
 
     if opcoes_combustiveis:
-      # Seleção de Combustível
+
+#      # Seleção de Combustível
+#      combustivel_selecionado = st.selectbox(
+#          "Selecione o Combustível:",
+#          options=list(opcoes_combustiveis.keys()),
+#          format_func=lambda x: opcoes_combustiveis[x],
+#      )
+
+      # Tenta identificar o índice padrão para "Gasolina Comum" ou variações similares
+      chaves_opcoes = list(opcoes_combustiveis.keys())
+      indice_padrao = 0
+      
+      for i, chave in enumerate(chaves_opcoes):
+        chave_lower = chave.lower()
+        if "gasolina" in chave_lower and ("comum" in chave_lower or "gasolina_comum" in chave_lower or chave_lower == "gasolina"):
+          indice_padrao = i
+          break
+
+      # Seleção de Combustível com Gasolina Comum como padrão inicial
       combustivel_selecionado = st.selectbox(
           "Selecione o Combustível:",
-          options=list(opcoes_combustiveis.keys()),
+          options=chaves_opcoes,
           format_func=lambda x: opcoes_combustiveis[x],
+          index=indice_padrao,
       )
 
       # Opções de Filtro de Outliers
@@ -344,11 +361,12 @@ with col2:
     fig.update_layout(
         font=dict(family="Arial, sans-serif"),
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
-        height=620,
+        height=620, 
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
     )
 
     st.plotly_chart(fig, use_container_width=True)
+
 #  else:
 #    st.info("Aguardando upload do arquivo `.csv` para renderizar o painel.")
