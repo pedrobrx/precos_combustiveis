@@ -30,6 +30,7 @@ st.markdown(
             font-size: 1.15rem !important;
             margin-bottom: -0.5rem !important;
         }
+
     </style>
 """,
     unsafe_allow_html=True,
@@ -221,8 +222,7 @@ if uploaded_file is not None:
           st.success("Outliers: Nenhum (0%)")
 else:
   with col1:
-    st.info("📌 Aguardando upload do arquivo `.csv` para renderizar o painel.")
-
+    st.info("Aguardando upload do arquivo `.csv` para renderizar o painel.")
 with col2:
   if uploaded_file is not None and not df_filtrado.empty:
     @st.cache_data
