@@ -1,3 +1,4 @@
+import os
 import geopandas as gpd
 import numpy as np
 import pandas as pd
@@ -242,12 +243,22 @@ else:
     st.info("Aguardando upload do arquivo `.csv` para renderizar o painel.")
 with col2:
   if uploaded_file is not None and not df_filtrado.empty:
+
     @st.cache_data
     def carregar_malha_goias():
-      url_geojson = "https://raw.githubusercontent.com/tbrugz/geodata-br/master/geojson/geojs-52-mun.json"
-      return gpd.read_file(url_geojson)
+
+#      url_geojson = "https://raw.githubusercontent.com/tbrugz/geodata-br/master/geojson/geojs-52-mun.json"
+#      return gpd.read_file(url_geojson)
+
+      arquivo_local = "geojs-52-mun.json"
+      if os.path.exists(arquivo_local):
+        return gpd.read_file(arquivo_local)
+      else:
+        url_geojson = "https://raw.githubusercontent.com/tbrugz/geodata-br/master/geojson/geojs-52-mun.json"
+        return gpd.read_file(url_geojson)
 
     gdf_go = carregar_malha_goias()
+
     gdf_go["id"] = gdf_go["id"].astype(str)
 
     df_base = df.drop(columns=[combustivel_selecionado], errors="ignore")
