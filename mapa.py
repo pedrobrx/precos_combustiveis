@@ -191,26 +191,6 @@ if uploaded_file is not None:
 
             st.caption(f"📅 **Período:** {data_ini} a {data_fim}")
 
-            # Bloco informativo para interpretação da régua de escala logarítmica com fonte menor e cor personalizada
-            if tipo_dado in ["volumes", "valor_total"]:
-                with st.expander("Como ler a Régua de cores (Escala Logarítmica à direita) ℹ️"):
-                    st.markdown(
-                        """
-                        <div style="font-size: 0.82rem; color: #00a2e8; line-height: 1.4;">
-                        A leitura da régua de calor à direita apresentada na imagem funciona da seguinte forma:<br>
-                        * Os números exibidos na régua (ex: 6, 8, 10, 12, 14, 16) não representam diretamente o valor em Reais ou Litros. Eles indicam patamares de grandeza matemática para equilibrar as cores no estado.<br><br>
-                        
-                        <b>Tradução prática:</b><br>
-                        * <b>Verde (4 a 6):</b> Municípios com menor volume ou faturamento.<br>
-                        * <b>Amarelo / Laranja (8 a 12):</b> Municípios de porte médio e intermediário.<br>
-                        * <b>Vermelho (14):</b> Os maiores polos econômicos do estado.<br>
-                        
-                        <i>Dica:</i> Passe o cursor do mouse sobre qualquer município no mapa para ver o valor real exato!
-                        </div>
-                        """,
-                        unsafe_allow_html=True
-                    )
-
             df_comb = df[df[combustivel_selecionado].notna()].copy()
             df_comb[combustivel_selecionado] = converter_para_float(df_comb[combustivel_selecionado])
             df_comb = df_comb[df_comb[combustivel_selecionado].notna()].copy()
@@ -448,6 +428,31 @@ with col2:
         )
 
         st.plotly_chart(fig, use_container_width=True, key=f"mapa_{tipo_dado}_{combustivel_selecionado}_{metodo_outliers}")
+
+        if tipo_dado in ["volumes", "valor_total"]:
+            st.markdown(
+                """
+                <div style="
+                    font-family: 'Arial', sans-serif; 
+                    font-size: 0.75rem; 
+                    color: #555555; 
+                    background-color: #f0f2f6; 
+                    padding: 5px 8px; 
+                    border-radius: 6px; 
+                    border-left: 4px solid #00a2e8;
+                    margin-top: -20px; 
+                    margin-bottom: 5px;
+                    width: 85.5%;
+                    box-sizing: border-box;                    
+                ">
+                    <b>Como ler a Régua de cores (Escala Logarítmica à direita):</b><br>
+                    • Os números exibidos na régua (ex: 6, 8, 10...) indicam patamares de grandeza matemática para equilibrar as cores.<br>
+                    • <b>Verde (4-6):</b> Menor volume/faturamento | <b>Amarelo / Laranja (8-12):</b> Municípios de porte médio e intermediário | <b>Vermelho (14):</b> Maiores polos econômicos.<br>
+                    <i>Dica: Passe o cursor sobre o mapa para ver o valor real exato!</i>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
 #    else:
 #        with col2:
